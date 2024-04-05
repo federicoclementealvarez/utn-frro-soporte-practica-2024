@@ -2,13 +2,19 @@
 
 
 def es_vocal_if(letra: str) -> bool:
-    """Toma un string y devuelve un booleano en base a si letra es una vocal o
-    no.
+    if(letra[0].lower() == 'a'):
+        return True
+    elif (letra[0].lower() == 'e'):
+        return True
+    elif (letra[0].lower() == 'i'):
+        return True
+    elif (letra[0].lower() == 'o'):
+        return True
+    elif (letra[0].lower() == 'u'):
+        return True
+    return False
 
-    Restricción: Utilizar un if para cada posibilidad con la función lower().
-    Referencia: https://docs.python.org/3/library/stdtypes.html#string-methods
-    """
-    pass # Completar
+
 
 
 # NO MODIFICAR - INICIO
@@ -22,10 +28,9 @@ assert es_vocal_if("A")
 
 
 def es_vocal_if_in(letra: str) -> bool:
-    """Re-escribir utilizando un sólo IF y el operador IN.
-    Referencia: https://docs.python.org/3/reference/expressions.html#membership-test-operations
-    """
-    pass # Completar
+    vocales = 'aeiou'
+
+    return True if(letra[0].lower() in vocales) else False
 
 
 # NO MODIFICAR - INICIO
@@ -39,8 +44,9 @@ assert es_vocal_if_in("A")
 
 
 def es_vocal_in(letra: str) -> bool:
-    """Re-escribir utilizando el operador IN pero sin utilizar IF."""
-    pass # Completar
+    vocales = 'aeiou'
+
+    return (letra[0].lower() in vocales)
 
 
 # NO MODIFICAR - INICIO
