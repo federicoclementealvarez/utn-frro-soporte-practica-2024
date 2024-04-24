@@ -14,10 +14,14 @@ class Article:
     def __init__(self, name: str) -> None:
         self.name = name
 
-    # NO MODIFICAR - FIN
-
-    # Completar
-
+    def __repr__(self):
+        return f"Article('{self.name}')"
+    
+    def __hash__(self):
+        return hash(self.name)
+    
+    def __eq__(self, other:Article) ->bool:
+        return self.name==other.name
 
 # NO MODIFICAR - INICIO
 class ShoppingCart:
@@ -46,7 +50,19 @@ class ShoppingCart:
         self.articles = new_articles
 
         return self
+    
+    def __str__(self):
+        return str([art.name for art in self.articles])
+    
+    def __repr__(self):
+        return f'ShoppingCart({[art for art in self.articles]})'
 
+    def __eq__(self, other:ShoppingCart) ->bool:
+        return set(self.articles)==set(other.articles)
+    
+    def __add__(self, other:ShoppingCart):
+        return ShoppingCart(self.articles+other.articles)
+    
     # NO MODIFICAR - FIN
 
     # Completar
