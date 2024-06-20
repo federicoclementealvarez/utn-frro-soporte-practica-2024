@@ -1,8 +1,18 @@
 """Base de Datos SQL - Crear y Borrar Tablas"""
-
 import sqlite3
 
 def crear_tabla():
+    conn = sqlite3.connect('database.db')
+    c = conn.cursor()
+    c.execute('''CREATE TABLE IF NOT EXISTS Persona
+                (IdPersona INTEGER PRIMARY KEY AUTOINCREMENT,
+                Nombre CHAR(30),
+                FechaNacimiento DATE,
+                DNI INTEGER,
+                Altura INTEGER)''')
+    conn.commit()
+    conn.close()
+
     """Implementar la funcion crear_tabla, que cree una tabla Persona con:
         - IdPersona: Int() (autoincremental)
         - Nombre: Char(30)
@@ -10,13 +20,16 @@ def crear_tabla():
         - DNI: Int()
         - Altura: Int()
     """
-    pass # Completar
 
 
 def borrar_tabla():
+    conn = sqlite3.connect('database.db')
+    c = conn.cursor()
+    c.execute('DROP TABLE IF EXISTS Persona')
+    conn.commit()
+    conn.close()
     """Implementar la funcion borrar_tabla, que borra la tabla creada 
     anteriormente."""
-    pass # Completar
 
 
 # NO MODIFICAR - INICIO
@@ -27,3 +40,6 @@ def reset_tabla(func):
         borrar_tabla()
     return func_wrapper
 # NO MODIFICAR - FIN
+
+crear_tabla()
+borrar_tabla()

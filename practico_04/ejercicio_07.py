@@ -1,12 +1,36 @@
 """Base de Datos SQL - Uso de múltiples tablas"""
 
+import sqlite3
 import datetime
 
-from practico_04.ejercicio_02 import agregar_persona
-from practico_04.ejercicio_06 import reset_tabla
+from ejercicio_02 import agregar_persona
+from ejercicio_06 import reset_tabla
 
 
 def agregar_peso(id_persona, fecha, peso):
+    conn = sqlite3.connect('database.db')
+    c = conn.cursor()
+
+    # Check if the persona exists
+    c.execute("SELECT IdPersona FROM Persona WHERE IdPersona = ?", (id_persona,))
+    persona = c.fetchone()
+    if not persona:
+        conn.close()
+        return False
+
+    # Check if there is no registro posterior a la fecha ingresada
+    c.execute("SELECT IdPersona FROM PersonaPeso WHERE IdPersona = ? AND Fecha > ?", (id_persona, fecha))
+    registro = c.fetchone()
+    if registro:
+        conn.close()
+        return False
+
+    # Insert the peso record
+    c.execute("INSERT INTO PersonaPeso (IdPersona, Fecha, Peso) VALUES (?, ?, ?)", (id_persona, fecha, peso))
+    conn.commit()
+    id_peso = c.lastrowid
+    conn.close()
+    return id_peso
     """Implementar la funcion agregar_peso, que inserte un registro en la tabla 
     PersonaPeso.
 

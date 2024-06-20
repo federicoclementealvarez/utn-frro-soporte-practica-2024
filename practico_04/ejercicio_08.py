@@ -1,19 +1,36 @@
 """Base de datos SQL - Listar"""
 
+import sqlite3
 import datetime
 
-from practico_04.ejercicio_02 import agregar_persona
-from practico_04.ejercicio_06 import reset_tabla
-from practico_04.ejercicio_07 import agregar_peso
+from ejercicio_02 import agregar_persona
+from ejercicio_06 import reset_tabla
+from ejercicio_07 import agregar_peso
 
 
 def listar_pesos(id_persona):
+    conn = sqlite3.connect('database.db')
+    c = conn.cursor()
+
+    # Check if the persona exists
+    c.execute("SELECT IdPersona FROM Persona WHERE IdPersona = ?", (id_persona,))
+    persona = c.fetchone()
+    if not persona:
+        conn.close()
+        return False
+
+    # Retrieve the pesos history
+    c.execute("SELECT Fecha, Peso FROM PersonaPeso WHERE IdPersona = ? ORDER BY Fecha", (id_persona,))
+    pesos = c.fetchall()
+    conn.close()
+
+    return [(fecha, peso) for fecha, peso in pesos]
     """Implementar la funcion listar_pesos, que devuelva el historial de pesos 
     para una persona dada.
 
     Debe validar:
     - Que el ID de la persona ingresada existe (reutilizando las funciones ya 
-     mplementadas).
+    implementadas).
 
     Debe devolver:
     - Lista de (fecha, peso), donde fecha esta representado por el siguiente 
@@ -30,7 +47,6 @@ def listar_pesos(id_persona):
 
     - False en caso de no cumplir con alguna validacion.
     """
-    return []
 
 
 # NO MODIFICAR - INICIO
@@ -41,8 +57,8 @@ def pruebas():
     agregar_peso(id_juan, datetime.datetime(2018, 6, 1), 85)
     pesos_juan = listar_pesos(id_juan)
     pesos_esperados = [
-        ('2018-05-01', 80),
-        ('2018-06-01', 85),
+        ('2018-05-01 00:00:00', 80),
+        ('2018-06-01 00:00:00', 85),
     ]
     assert pesos_juan == pesos_esperados
     # id incorrecto
